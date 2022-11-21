@@ -1,0 +1,17 @@
+NFS para sincronizar pastas dos nós
+Origem:
+apt install nfs-server
+echo "/var/lib/docker/volumes/ 192.168.15.32(rw,sync,subtree_check) 192.168.15.33(rw,sync,subtree_check)" >> /etc/exports
+exportfs -ar
+showmount -e
+
+Destino:
+apt install nfs-common
+mount -o v3 192.168.15.31:/var/lib/docker/volumes/ /var/lib/docker/volumes/
+
+
+Docker Swarm
+Master:
+sudo docker swarm init --advertise-addr 192.168.15.31
+Workers:
+sudo docker swarm join --token SWMTKN-1-39zkhhg55spnccwru278lu4llp8wmraokh2fshruyd0n9dgdsf-b209qdl2thncq7al3jq8jj66k 192.168.15.31:2377

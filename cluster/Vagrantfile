@@ -1,0 +1,57 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/jammy64"
+
+  config.vm.define "node1" do |node1|
+    node1.vm.network "public_network", ip: "192.168.15.31", bridge: "wlp4s0"
+#    node1.vm.network "forwarded_port", guest: 80, host: 8080
+    node1.vm.hostname = "node1"
+    node1.vm.provision "shell",
+      inline: "curl -fsSL https://get.docker.com | sh -"
+    node1.vm.provision "shell", inline: "service docker restart"
+    node1.vm.provision "shell",
+      inline: "apt-get install -y nfs-server"
+    node1.vm.synced_folder ".", "/vagrant", disabled: true
+    node1.vm.provider "virtualbox" do |v|
+      v.name = "node1"
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+    end
+  end
+
+  config.vm.define "node2" do |node2|
+    node2.vm.network "public_network", ip: "192.168.15.32", bridge: "wlp4s0"
+#    node2.vm.network "forwarded_port", guest: 80, host: 8080
+    node2.vm.hostname = "node2"
+    node2.vm.provision "shell",
+      inline: "curl -fsSL https://get.docker.com | sh -"
+    node2.vm.provision "shell", inline: "service docker restart"
+    node2.vm.provision "shell",
+      inline: "apt-get install -y nfs-common"
+    node2.vm.synced_folder ".", "/vagrant", disabled: true
+    node2.vm.provider "virtualbox" do |v|
+      v.name = "node2"
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+    end
+  end
+  
+    config.vm.define "node3" do |node3|
+    node3.vm.network "public_network", ip: "192.168.15.33", bridge: "wlp4s0"
+#    node3.vm.network "forwarded_port", guest: 80, host: 8080
+    node3.vm.hostname = "node3"
+    node3.vm.provision "shell",
+      inline: "curl -fsSL https://get.docker.com | sh -"
+    node3.vm.provision "shell", inline: "service docker restart"
+    node3.vm.provision "shell",
+      inline: "apt-get install -y nfs-common"
+    node3.vm.synced_folder ".", "/vagrant", disabled: true
+    node3.vm.provider "virtualbox" do |v|
+      v.name = "node3"
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+    end
+  end
+end
