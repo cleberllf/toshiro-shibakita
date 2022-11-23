@@ -14,4 +14,4 @@ Docker Swarm
 Master:
 sudo docker swarm init --advertise-addr 192.168.15.31
 Workers:
-sudo docker swarm join --token SWMTKN-1-39zkhhg55spnccwru278lu4llp8wmraokh2fshruyd0n9dgdsf-b209qdl2thncq7al3jq8jj66k 192.168.15.31:2377
+sudo docker swarm join --token TOKEN 192.168.15.31:2377
