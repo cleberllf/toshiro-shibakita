@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #docker network create rede-toshiro
 #docker volume create dados-bd
 #docker volume create dados-app

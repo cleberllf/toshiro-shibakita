@@ -7,6 +7,7 @@
     th { text-align: center; }
     td { text-align: center; }
 </style>
+
 </head>
 <body>
 
@@ -14,7 +15,7 @@
 ini_set("display_errors", 1);
 header('Content-Type: text/html; charset=iso-8859-1');
 
-echo 'Versão Atual do PHP: ' . phpversion() . '<br>';
+echo 'Versão Atual do PHP: ' . phpversion() . '<br><br>';
 
 $servername = "mysql";
 $username = "root";
@@ -31,10 +32,10 @@ if (mysqli_connect_errno()) {
 }
 
 $valor_rand1 =  rand(1, 999);
-$valor_rand2 = strtoupper(substr(bin2hex(random_bytes(4)), 1));
-$valor_rand3 = strtoupper(substr(bin2hex(random_bytes(4)), 1));
-$valor_rand4 = strtoupper(substr(bin2hex(random_bytes(4)), 1));
-$valor_rand5 = strtoupper(substr(bin2hex(random_bytes(4)), 1));
+$valor_rand2 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
+$valor_rand3 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
+$valor_rand4 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
+$valor_rand5 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
 $host_name = gethostname();
 
 $query = "INSERT INTO clientes (idCliente, nome, endereco, email, telefone, host)
@@ -44,27 +45,27 @@ $query = "INSERT INTO clientes (idCliente, nome, endereco, email, telefone, host
 if ($link->query($query) === TRUE) {
   echo "Novo registro criado com sucesso.";
 }
-else if ($link->errno == 1146) {
-$query = "CREATE TABLE clientes (
-	idCliente INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50) NOT NULL,
-	endereco VARCHAR(100) NOT NULL,
-	email VARCHAR(60) NOT NULL,
-	telefone VARCHAR(15) NOT NULL,
-	host VARCHAR(50)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
-  if ($link->query($query) === TRUE) {
-    echo "A tabela clientes não existia, mas foi criada com sucesso."
-  }
+else if ($link->errno == "1146") {
+	$query = "CREATE TABLE clientes (
+		idCliente INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		nome VARCHAR(50) NOT NULL,
+		endereco VARCHAR(100) NOT NULL,
+		email VARCHAR(60) NOT NULL,
+		telefone VARCHAR(15) NOT NULL,
+		host VARCHAR(50)
+	) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+	echo "Erro: " . $link->error . "<br><br>";
+	if ($link->query($query) === TRUE) {
+		echo "A tabela clientes não existia, mas foi criada com sucesso.";
+	}
 }
 else {
   echo "Erro: " . $link->error;
 }
 ?>
-
-<blockquote>
-<h1>Comércio do Toshiso</h1>
-<br/>
+<center>
+<h1>Comércio do Toshiro Shibakita</h1>
+</center>
 <table>
 <thead>
 <tr>
@@ -77,7 +78,7 @@ else {
 </thead>
 <tbody>
 <?php
-	$query = "SELECT * from clientes ORDER BY id";
+	$query = "SELECT * from clientes ORDER BY idCliente";
     $matrizDados = $link->query($query);
 	while ($dados = $matrizDados->fetch_array()) {
 ?>
@@ -93,8 +94,5 @@ else {
 ?>
 </tbody>
 </table>
-
-</blockquote>
-
 </body>
 </html>

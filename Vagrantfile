@@ -16,14 +16,11 @@ Vagrant.configure("2") do |config|
     node1.vm.provision "shell", inline: "docker swarm join-token worker | grep -i 'join --token' > /home/vagrant/arquivosCluster/swarm-join || docker swarm init --advertise-addr 192.168.31.11 >> /home/vagrant/arquivosCluster/swarm-join"
     node1.vm.provision "shell", inline: "docker pull mysql:5.7 && docker pull webdevops/php-apache:alpine-php7"
     node1.vm.provision "shell", inline: "docker build -t proxy-reverso:1.0 /home/vagrant/arquivosCluster/proxyReverso/"
-#    node1.vm.provision "file", source: "arquivosCluster/banco.sql", destination: "/home/vagrant/banco.sql"
-#    node1.vm.provision "file", source: "arquivosCluster/app/index.php", destination: "/home/vagrant/app/index.php"
+#    node1.vm.provision "file", source: "arquivosCluster/app/index.php", destination: "/home/vagrant/arquivosCluster/app/index.php"
 #    node1.vm.provision "file", source: "arquivosCluster/toshiro-stack.yml", destination: "/home/vagrant/toshiro-stack.yml"
 #    node1.vm.provision "file", source: "arquivosCluster/criarAppToshiro.sh", destination: "/home/vagrant/criarAppToshiro.sh"
-#    node1.vm.provision "shell", inline: "docker stack up toshiro -c /home/vagrant/arquivosCluster/toshiro-stack.yml"
-#    node1.vm.provision "shell", inline: "cp /home/vagrant/arquivosCluster/app/*.* /var/lib/docker/volumes/toshiro_dados-app/_data/"
     node1.vm.synced_folder "arquivosCluster/app/", "/var/lib/docker/volumes/toshiro_dados-app/_data/", disabled: false
-    node1.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
+#    node1.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
     node1.vm.synced_folder ".", "/home/vagrant", disabled: true
     node1.vm.provider "virtualbox" do |v|
       v.name = "node1"
@@ -50,7 +47,7 @@ Vagrant.configure("2") do |config|
     node2.vm.provision "shell", inline: "docker pull mysql:5.7 && docker pull webdevops/php-apache:alpine-php7"
     node2.vm.provision "shell", inline: "docker build -t proxy-reverso:1.0 /home/vagrant/arquivosCluster/proxyReverso/"
     node2.vm.synced_folder "arquivosCluster/app/", "/var/lib/docker/volumes/toshiro_dados-app/_data/", disabled: false
-    node2.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
+#    node2.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
     node2.vm.synced_folder ".", "/home/vagrant", disabled: true
     node2.vm.provider "virtualbox" do |v|
       v.name = "node2"
