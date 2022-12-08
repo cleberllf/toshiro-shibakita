@@ -1,0 +1,72 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.7
+#    command: sh -c "echo 'teste'"
+    hostname: "mysql"
+    ports:
+      - 3306:3306
+    volumes:
+      - dados-bd:/var/lib/mysql
+#      - ./bancoDeDados:/var/lib/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: Senha123
+      MYSQL_DATABASE: bd_toshiro
+    networks:
+      - rede-toshiro
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+
+  app:
+    image: webdevops/php-apache:alpine-php7
+    ports:
+      - 8080:80
+    working_dir: /app
+    volumes:
+      - dados-app:/app
+#      - ./app:/app
+    networks:
+      - rede-toshiro
+    deploy:
+      mode: replicated
+      replicas: 4
+      placement:
+        constraints: [node.platform.os == linux]
+#        constraints: [node.role == worker]
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 64M
+    depends_on:
+      - mysql
+
+  proxy:
+    image: proxy-reverso:1.0
+    ports:
+      - 80:80
+    networks:
+      - rede-toshiro
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 64M
+
+volumes:
+  dados-bd:
+  dados-app:
+
+
+networks:
+  rede-toshiro:
