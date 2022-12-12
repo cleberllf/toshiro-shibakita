@@ -1,11 +1,12 @@
 <html>
 
 <head>
-<title>Comércio do Toshiro Shibakita</title>
+<title>Comércio do Toshiro</title>
 <style>
     table { width: 100%; }
     th { text-align: center; }
     td { text-align: center; }
+	h1 { text-align: center; }
 </style>
 
 </head>
@@ -15,7 +16,7 @@
 ini_set("display_errors", 1);
 header('Content-Type: text/html; charset=iso-8859-1');
 
-echo 'Versão Atual do PHP: ' . phpversion() . '<br><br>';
+echo 'Versão Atual do PHP: '. phpversion() .'<br>';
 
 $servername = "mysql";
 $username = "root";
@@ -39,11 +40,10 @@ $valor_rand5 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
 $host_name = gethostname();
 
 $query = "INSERT INTO clientes (idCliente, nome, endereco, email, telefone, host)
- VALUES (null , '$valor_rand2', '$valor_rand3', '$valor_rand4', '$valor_rand5','$host_name')";
-
+ VALUES (null , 'Nome Completo do Cliente', 'Endereço detalhado do cliente', 'cliente@email.com', '(71) 12345-6789','$host_name')";
 
 if ($link->query($query) === TRUE) {
-  echo "Novo registro criado com sucesso.";
+  //echo "Novo registro criado com sucesso.<br>";
 }
 else if ($link->errno == "1146") {
 	$query = "CREATE TABLE clientes (
@@ -54,7 +54,7 @@ else if ($link->errno == "1146") {
 		telefone VARCHAR(15) NOT NULL,
 		host VARCHAR(50)
 	) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
-	echo "Erro: " . $link->error . "<br><br>";
+	echo "Erro: " . $link->error . "<br>";
 	if ($link->query($query) === TRUE) {
 		echo "A tabela clientes não existia, mas foi criada com sucesso.";
 	}
@@ -63,11 +63,11 @@ else {
   echo "Erro: " . $link->error;
 }
 ?>
-<center>
-<h1>Comércio do Toshiro Shibakita</h1>
-</center>
+
+<hr>
 <table>
 <thead>
+<tr><th colspan="5" style="font-size: 28px;">Comércio do Toshiro</th></tr>
 <tr>
 	<th>Nome</th>
 	<th>Endereço</th>
@@ -81,18 +81,25 @@ else {
 	$query = "SELECT * from clientes ORDER BY idCliente";
     $matrizDados = $link->query($query);
 	while ($dados = $matrizDados->fetch_array()) {
-?>
-<tr>
-	<td><?php echo $dados['nome']; ?></td>
-	<td><?php echo $dados['endereco']; ?></td>
-	<td><?php echo $dados['email']; ?></td>
-	<td><?php echo $dados['telefone']; ?></td>
-    <td><?php echo $dados['host']; ?></td>
-</tr>
-<?php
+		if ($dados['idCliente'] == '50') {
+			$query = 'TRUNCATE TABLE clientes;';
+			if ($link->query($query) === TRUE) {
+				echo "<tr><td colspan='5'><b>Dados zerados na tabela clientes</b></td></tr>";
+			}
+		} else {
+echo "<tr>"
+	."<td>".$dados['nome']."</td>"
+	."<td>".$dados['endereco']."</td>"
+	."<td>".$dados['email']."</td>"
+	."<td>".$dados['telefone']."</td>"
+    ."<td>".$dados['host']."</td>"
+	."</tr>";
+		}
 	}
 ?>
 </tbody>
 </table>
+</hr>
+
 </body>
 </html>
