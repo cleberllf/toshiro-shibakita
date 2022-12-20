@@ -17,7 +17,6 @@ case "$HOSTNAME" in
     ;;
 
     node2)
-
         timedatectl set-timezone America/Bahia
         curl -fsSL https://get.docker.com | sh -
         grep -iq "alias docker='sudo docker'" .bashrc || echo -e "alias apt='sudo apt'\nalias apt-get='sudo apt-get'\nalias docker='sudo docker'\nalias docker-compose='sudo docker-compose'" >> /home/vagrant/.bashrc

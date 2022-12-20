@@ -9,8 +9,7 @@ Vagrant.configure("2") do |config|
 #    node1.vm.provision "file", source: "arquivosCluster/toshiro-stack.yml", destination: "/home/vagrant/toshiro-stack.yml"
 #    node1.vm.provision "file", source: "arquivosCluster/criarAppToshiro.sh", destination: "/home/vagrant/criarAppToshiro.sh"
 #    node1.vm.synced_folder "arquivosCluster/app/", "/var/lib/docker/volumes/toshiro_dados-app/_data/", disabled: false
-#    node1.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
-    node1.vm.provision "shell", inline: "bash /home/vagrant/arquivosCluster/iniciaNodes.sh"
+    node1.vm.provision "shell", path: "configuraNodes.sh"
 #    node1.vm.provision "shell", inline: "bash /home/vagrant/arquivosCluster/criarAppToshiro.sh"
     node1.vm.synced_folder ".", "/home/vagrant", disabled: true
     node1.vm.provider "virtualbox" do |v|
@@ -27,8 +26,7 @@ Vagrant.configure("2") do |config|
     node2.vm.hostname = "node2"
     node2.vm.synced_folder "arquivosCluster/", "/home/vagrant/arquivosCluster/", disabled: false
 #    node2.vm.synced_folder "arquivosCluster/app/", "/var/lib/docker/volumes/toshiro_dados-app/_data/", disabled: false
-#    node2.vm.synced_folder "arquivosCluster/bancoDeDados/", "/var/lib/docker/volumes/toshiro_dados-bd/_data/", disabled: false
-    node2.vm.provision "shell", inline: "bash /home/vagrant/arquivosCluster/iniciaNodes.sh"
+    node2.vm.provision "shell", path: "configuraNodes.sh"
     node2.vm.synced_folder ".", "/home/vagrant", disabled: true
     node2.vm.provider "virtualbox" do |v|
       v.name = "node2"

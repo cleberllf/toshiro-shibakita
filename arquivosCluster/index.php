@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>ComÈrcio do Toshiro</title>
+<title>Com√©rcio do Toshiro</title>
 <style>
     table { width: 100%; }
     th { text-align: center; }
@@ -14,19 +14,19 @@
 
 <?php
 ini_set("display_errors", 1);
-header('Content-Type: text/html; charset=iso-8859-1');
+header('Content-Type: text/html; charset=utf-8');
 
-echo 'Vers„o Atual do PHP: '. phpversion() .'<br>';
+echo 'Vers√£o Atual do PHP: '. phpversion() .'<br>';
 
 $servername = "mysql";
 $username = "root";
 $password = "Senha123";
 $database = "bd_toshiro";
 
-// Criar conex„o
+// Criar conex√£o
 $link = new mysqli($servername, $username, $password, $database);
 
-/* check connection */
+/* Verifica a conex√£o */
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
@@ -39,15 +39,15 @@ $valor_rand4 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
 $valor_rand5 = strtoupper(substr(bin2hex(random_bytes(5)), 1));
 $host_name = gethostname();
 
-$query = "INSERT INTO clientes (idCliente, nome, endereco, email, telefone, host)
- VALUES (null , 'Nome Completo do Cliente', 'EndereÁo detalhado do cliente', 'cliente@email.com', '(71) 12345-6789','$host_name')";
+$query = "INSERT INTO clientes (id, nome, endereco, email, telefone, host)
+ VALUES (null , 'Nome Completo do Cliente', 'Endere√ßo detalhado do cliente', 'cliente@email.com', '(71) 12345-6789','$host_name')";
 
 if ($link->query($query) === TRUE) {
   //echo "Novo registro criado com sucesso.<br>";
 }
 else if ($link->errno == "1146") {
 	$query = "CREATE TABLE clientes (
-		idCliente INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 		nome VARCHAR(50) NOT NULL,
 		endereco VARCHAR(100) NOT NULL,
 		email VARCHAR(60) NOT NULL,
@@ -56,7 +56,7 @@ else if ($link->errno == "1146") {
 	) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 	echo "Erro: " . $link->error . "<br>";
 	if ($link->query($query) === TRUE) {
-		echo "A tabela clientes n„o existia, mas foi criada com sucesso.";
+		echo "A tabela clientes n√£o existia, mas foi criada com sucesso.";
 	}
 }
 else {
@@ -67,10 +67,10 @@ else {
 <hr>
 <table>
 <thead>
-<tr><th colspan="5" style="font-size: 28px;">ComÈrcio do Toshiro</th></tr>
+<tr><th colspan="5" style="font-size: 28px;">Com√©rcio do Toshiro</th></tr>
 <tr>
 	<th>Nome</th>
-	<th>EndereÁo</th>
+	<th>Endere√ßo</th>
 	<th>E-mail</th>
 	<th>Telefone</th>
     <th>Host</th>
@@ -78,10 +78,10 @@ else {
 </thead>
 <tbody>
 <?php
-	$query = "SELECT * from clientes ORDER BY idCliente";
+	$query = "SELECT * from clientes ORDER BY id";
     $matrizDados = $link->query($query);
 	while ($dados = $matrizDados->fetch_array()) {
-		if ($dados['idCliente'] == '50') {
+		if ($dados['id'] == '50') {
 			$query = 'TRUNCATE TABLE clientes;';
 			if ($link->query($query) === TRUE) {
 				echo "<tr><td colspan='5'><b>Dados zerados na tabela clientes</b></td></tr>";
